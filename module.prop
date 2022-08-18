@@ -1,0 +1,6 @@
+id=scene_swap_controller
+name=Scene的附加模块(二)
+version=3.3.0
+versionCode=3300
+author=嘟嘟Ski
+description=Scene的附加模块之二（ZRAM/SWAP控制器），在开机时根据配置调整虚拟内存
