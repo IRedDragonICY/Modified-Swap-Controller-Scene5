@@ -1,0 +1,100 @@
+ro.sys.fw.bg_apps_limit=120
+
+# 高通家的一些后台限制参数
+# Android P以后已经迁移到/vendor/etc/perf/perfconfigstore.xml里
+ro.vendor.qti.sys.fw.bservice_enable=enable
+ro.vendor.qti.sys.fw.bservice_limit=15
+# ro.vendor.qti.sys.fw.bservice_age=5000
+ro.vendor.qti.sys.fw.bg_apps_limit=120
+ro.vendor.qti.config.zram=false
+ro.vendor.qti.config.swap=false
+
+# 是否使用psi，仅限Android 10+
+ro.lmk.use_psi=true
+# default 70，即在1s时间内部分失速70ms时上报压力
+ro.lmk.psi_partial_stall_ms=150
+# default 700，即在1s时间内完全失速700ms时上报压力
+ro.lmk.psi_complete_stall_ms=700
+
+
+
+# 是否使用传统的lmk机制
+ro.lmk.use_minfree_levels=false
+
+
+# SWAP不足比例，即swap可用空间低于此百分比时，不再继续通过swap回收内存而是通过lmk释放内存
+ro.lmk.swap_free_low_percentage=10
+
+
+
+
+# 用户空间LMKD的一些配置
+
+# 内存压力低时（设置1001，不杀死任何进程）
+ro.lmk.low=1001
+
+# 对于基于AOSP/MTK基线的Android Q来说此参数至关重要
+# 设为>906的值表示，中等内存压力下不杀死任何进程
+# 这意味着随着内存占用变高，手机会越来越卡，直到压力到达临界值
+# 如果希望手机尽可能保持流畅，可设为900或800
+ro.lmk.medium=906
+
+# 内存占用达到临界值时可杀死的进程
+ro.lmk.critical=800
+# 是否允许将medium级压力上升为critical级压力
+ro.lmk.critical_upgrade=true
+
+# 这里50表示 RAM和SWAP/ZRAM的用量已经同样多
+# 其比例通过 RAM用量/总内存用量(含ZRAM/SWAP用量)*100
+# Pressure=memory.usage_in_bytes*100/memory.memsw.usage_in_bytes 可在/dev/memcg查看
+ro.lmk.upgrade_pressure=30
+
+# pressure大于多少时允许将critical级别的压力降为medium级别
+# 如果你设置了固定容量的swap/zram
+# 并且希望被充分利用，那么就可以斟酌一下这个值。
+# 但不建议通过此选项来迫使系统把swap/zram用完。
+# 因为在内存严重不足时，系统运行极为缓慢，kswapd0很难在短时间内扫描并完成交换。建议提高swap使用积极性，在内存充足时进行交换，尽量避免出现内存严重不足的情况
+# 如果不关心swap使用率，可设为100表示禁用此特性
+ro.lmk.downgrade_pressure=100
+
+# 是否在内存不足时杀死最"胖"的进程
+# 开启此特性将可以很快的完成内存回，收迅速缓解压力
+# 但效果就是是吃内存的"胖子"会被针对
+ro.lmk.kill_heaviest_task=false
+
+# 杀完一个进程后等多久再继续检查和杀下一个
+ro.lmk.kill_timeout_ms=1
+
+# 增强批量kill
+ro.lmk.enhance_batch_kill=false
+
+# 自适应lmk，内存波动大时杀的更积极点
+ro.lmk.enable_adaptive_lmk=false
+
+
+
+# 是否使用用户空间lmkd而非传统lmk，仅限Android P
+# ro.lmk.enable_userspace_lmk=false
+
+
+
+# 用户空间LMKD的设置参数 单位（Page）
+sys.lmk.minfree_levels=4096:0,5120:100,8192:200,32768:250,56320:900,71680:906
+
+# 单位（Page）
+persist.sys.lmk.camera_minfree_levels=18432:0,23040:100,27648:200,64512:300,115712:800,131072:900
+# 单位（KB）
+persist.sys.minfree_6g=16384,20480,32768,131072,230400,286720
+persist.sys.minfree_8g=16384,20480,32768,131072,384000,524288
+persist.sys.minfree_12g=16384,20480,131072,384000,524288,819200
+persist.sys.minfree_def=16384,20480,32768,131072,230400,286720
+
+# 标识SWAP控制模块是否已安装，Scene3.3.3+ 会读取此参数
+# scene读取到此参数时，会跳过在软件自启动时设置swap，避免和模块重复执行
+vtools.swap.controller=magisk
+
+# 未经验证的配置
+# persist.sys.mem_cgated=0
+# persist.sys.mem_fgated=0
+# persist.sys.memctrl=off
+# persist.sys.zram_enabled=0
